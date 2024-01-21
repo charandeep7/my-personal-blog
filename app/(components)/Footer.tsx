@@ -11,6 +11,9 @@ export default function Footer() {
         <a href="https://github.com/charandeep7" target="_blank" className="hover:text-blue-500">
           Github
         </a>
+        <a href="https://kitish-blog.sanity.studio/" target="_blank" className="hover:text-blue-500">
+          Sanity
+        </a>
       </div>
     </div>
   );
