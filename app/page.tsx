@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { client } from "./lib/sanity";
 
-export const revalidate = 2 
+export const revalidate = 600
 
 async function getData() {
   const query = `*[_type == "post"]`;

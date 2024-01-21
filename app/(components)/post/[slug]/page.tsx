@@ -88,7 +88,7 @@ export default async function SlugPage({
   );
 }
 
-export const revalidate = 1800
+export const revalidate = 600
 
 export async function generateStaticParams() {
   const query = `*[_type == "post"]`
