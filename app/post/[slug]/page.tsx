@@ -1,6 +1,7 @@
 import { client } from "@/app/lib/sanity";
 import { urlFor } from "@/app/lib/sanityImageUrl";
 import { PortableText } from "@portabletext/react";
+import { notFound } from 'next/navigation'
 import Image from "next/image";
 
 async function getData(slug: string) {
@@ -18,16 +19,15 @@ export async function generateMetadata({
   }) {
 
     const data = await getData(params.slug) as Post
-    const { title } = data
 
-    if (!title) {
+    if (!data?.title) {
         return {
             title: 'Post Not Found'
         }
     }
 
     return {
-        title
+        title: data.title
     }
 }
 
@@ -37,7 +37,9 @@ export default async function SlugPage({
   params: { slug: string };
 }) {
   const data = (await getData(params.slug)) as Post;
-
+  if(!data || !data?.title){
+    notFound()
+  }
   const PortableTextComponent = {
     types: {
       image: ({ value }: { value: any }) => (
@@ -84,4 +86,14 @@ export default async function SlugPage({
       </div>
     </div>
   );
+}
+
+export const revalidate = 1800
+
+export async function generateStaticParams() {
+  const query = `*[_type == "post"]`
+  const data = await client.fetch(query) as Post[]
+  return data.map(({slug}) => ({
+    slug: slug.current
+  }))
 }
